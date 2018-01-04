@@ -35,13 +35,13 @@ public class Model {
 				e.printStackTrace();
 			}
 		}
-		String oneLine = memo.no + SEP + memo.title + SEP + memo.content + SEP + memo.date + "\n";
+		String oneLine = memo.no + SEP + memo.title + SEP + memo.content + SEP + memo.date + "\r\n";
 
 		try {
 			FileOutputStream fis = new FileOutputStream(tempMemo, true); // true∏¶
 																			// «œ∞Ì,
 																			// æ∆øÙ«≤
-			OutputStreamWriter os = new OutputStreamWriter(fis, "UTF-8");
+			OutputStreamWriter os = new OutputStreamWriter(fis);
 			BufferedWriter bw = new BufferedWriter(os); // append∏¶ «œ∏È ∞™¿Ã ¥ﬁ∂Û∫Ÿ¿Ω.
 			bw.append(oneLine);
 			bw.flush();
@@ -56,37 +56,30 @@ public class Model {
 	}
 
 	public Memo getMemo(int index) {
-
-		data.clear();
+		Memo memo = null;
 		try {
 			FileInputStream fis = new FileInputStream(tempMemo); // ¿Œ«≤
 			InputStreamReader is = new InputStreamReader(fis);
 			BufferedReader br = new BufferedReader(is);
-
+			
 			String temp = "";
 			while ((temp = br.readLine()) != null) {
 				String[] splitTemp = temp.split(SEP);
-				Memo memo= new Memo();
-				memo.no = Integer.parseInt(splitTemp[0]);
-				memo.title = splitTemp[1];
-				memo.content = splitTemp[2];
-				memo.date = Long.parseLong(splitTemp[3]);
-				data.add(memo);
+				if(Integer.parseInt(splitTemp[0]) == index){
+					memo = new Memo();
+					memo.no = Integer.parseInt(splitTemp[0]);
+					memo.title = splitTemp[1];
+					memo.content = splitTemp[2];
+					memo.date = Long.parseLong(splitTemp[3]);
+				}
 			}
+			br.close();
 		} catch (Exception e) {
-			
-			e.printStackTrace();
-		} 
-		System.out.println(data.size());
 
-		Memo temp = null;
-		for (Memo memo : data) {
-			if (memo.no == index) {
-				temp = memo;
-				return temp;
-			}
+			e.printStackTrace();
 		}
-		return null;
+		System.out.println(data.size());
+		return memo;
 	}
 
 	public void update(Memo memo) {
@@ -95,6 +88,34 @@ public class Model {
 
 	public void delete(int index) {
 		data.remove(index - 1);
+	}
+
+	public ArrayList<Memo> getList() {
+
+		if(data != null)
+		data.clear();
+//		data = new ArrayList();
+		try {
+			FileInputStream fis = new FileInputStream(tempMemo); // ¿Œ«≤
+			InputStreamReader is = new InputStreamReader(fis);
+			BufferedReader br = new BufferedReader(is);
+			String temp = "";
+			while ((temp = br.readLine()) != null) {
+				Memo memo = new Memo();
+				String[] splitTemp = temp.split(SEP);
+				memo.no = Integer.parseInt(splitTemp[0]);
+				memo.title = splitTemp[1];
+				memo.content = splitTemp[2];
+				memo.date = Long.parseLong(splitTemp[3]);
+				data.add(memo);
+//				System.out.println(memo.title);
+			}
+			br.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return data;
 	}
 
 }

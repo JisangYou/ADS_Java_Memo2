@@ -1,5 +1,7 @@
 package com.jisang.java.memo2;
 
+import java.util.ArrayList;
+
 public class Controller {
 
 	View view;
@@ -41,6 +43,8 @@ public class Controller {
 
 				break;
 			case "l":
+				ArrayList<Memo> data = model.getList();
+				view.showList(data);
 				break;
 			case "x":
 				Run = false;

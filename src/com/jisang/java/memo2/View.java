@@ -1,5 +1,6 @@
 package com.jisang.java.memo2;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class View {
@@ -61,6 +62,16 @@ public class View {
 		int index = Integer.parseInt(scanner.nextLine());
 		return index;
 		
+	}
+	
+	public void showList(ArrayList<Memo> data){
+		
+		for(Memo memo : data){
+		print("|NO :"+ memo.no);
+		print("|title :"+ memo.title);
+		print("|content :"+ memo.content);
+		print("|date :"+ memo.date);
+		}
 	}
 	
 
